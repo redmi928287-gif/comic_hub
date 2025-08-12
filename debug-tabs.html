@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Debug Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: #00d4ff;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: #333;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .tab-content.active {
+            display: block !important;
+        }
+        .debug-info {
+            background: #444;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tab Debug Test</h1>
+    
+    <div class="debug-info">
+        <h3>Debug Information:</h3>
+        <p>Click the buttons below to test tab switching</p>
+        <p>Check the console for detailed logs</p>
+    </div>
+    
+    <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="upload">Upload Comic</button>
+        <button class="tab-btn" data-tab="users">Manage Users</button>
+        <button class="tab-btn" data-tab="comics">Manage Comics</button>
+        <button class="tab-btn" data-tab="stats">Statistics</button>
+        <button class="tab-btn" data-tab="advertisements">Upload Ads</button>
+        <button class="tab-btn" data-tab="premium-users">Premium Users</button>
+    </div>
+    
+    <div class="tab-content active" id="upload">
+        <h3>Upload Comic Tab</h3>
+        <p>This is the upload comic tab content.</p>
+    </div>
+    
+    <div class="tab-content" id="users">
+        <h3>Manage Users Tab</h3>
+        <p>This is the manage users tab content.</p>
+    </div>
+    
+    <div class="tab-content" id="comics">
+        <h3>Manage Comics Tab</h3>
+        <p>This is the manage comics tab content.</p>
+    </div>
+    
+    <div class="tab-content" id="stats">
+        <h3>Statistics Tab</h3>
+        <p>This is the statistics tab content.</p>
+    </div>
+    
+    <div class="tab-content" id="advertisements">
+        <h3>Upload Ads Tab</h3>
+        <p>This is the upload ads tab content.</p>
+        <form id="adUploadForm">
+            <div>
+                <label for="adTitle">Ad Title:</label>
+                <input type="text" id="adTitle" name="adTitle" required>
+            </div>
+            <div>
+                <label for="adText">Ad Text:</label>
+                <textarea id="adText" name="adText" rows="3" required></textarea>
+            </div>
+            <div>
+                <label for="adTelegramLink">Telegram Link:</label>
+                <input type="url" id="adTelegramLink" name="adTelegramLink" placeholder="https://t.me/..." required>
+            </div>
+            <div>
+                <label for="adBannerImage">Banner Image:</label>
+                <input type="file" id="adBannerImage" name="adBannerImage" accept="image/*" required>
+            </div>
+            <button type="submit">Upload Advertisement</button>
+        </form>
+    </div>
+    
+    <div class="tab-content" id="premium-users">
+        <h3>Premium Users Tab</h3>
+        <p>This is the premium users tab content.</p>
+    </div>
+    
+    <div class="debug-info">
+        <h3>Test Functions:</h3>
+        <button onclick="testUploadAdsTab()">Test Upload Ads Tab</button>
+        <button onclick="showAllTabs()">Show All Tabs</button>
+        <button onclick="hideAllTabs()">Hide All Tabs</button>
+    </div>
+    
+    <script>
+        // Tab switching function
+        function showAdminTab(tabName) {
+            console.log('=== SHOW ADMIN TAB DEBUG ===');
+            console.log('Requested tab:', tabName);
+            
+            // Hide all tab contents
+            const allTabContents = document.querySelectorAll('.tab-content');
+            console.log('Found tab contents:', allTabContents.length);
+            
+            allTabContents.forEach((content, index) => {
+                console.log(`Tab content ${index}:`, content.id, 'currently active:', content.classList.contains('active'));
+                content.classList.remove('active');
+                console.log(`Removed active from tab content:`, content.id);
+            });
+            
+            // Remove active class from all tab buttons
+            const allTabButtons = document.querySelectorAll('.tab-btn');
+            console.log('Found tab buttons:', allTabButtons.length);
+            
+            allTabButtons.forEach((btn, index) => {
+                console.log(`Tab button ${index}:`, btn.textContent, 'data-tab:', btn.dataset.tab, 'currently active:', btn.classList.contains('active'));
+                btn.classList.remove('active');
+                console.log(`Removed active from tab button:`, btn.textContent);
+            });
+            
+            // Show selected tab content
+            const selectedTab = document.getElementById(tabName);
+            console.log('Looking for tab with ID:', tabName);
+            console.log('Selected tab element:', selectedTab);
+            
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+                console.log('✅ Successfully activated tab content:', tabName);
+                
+                // Force display block to ensure visibility
+                selectedTab.style.display = 'block';
+                console.log('Set display to block for:', tabName);
+            } else {
+                console.error('❌ Tab content not found:', tabName);
+                console.log('Available tab IDs:', Array.from(allTabContents).map(t => t.id));
+            }
+            
+            // Add active class to clicked button
+            const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
+            console.log('Looking for button with data-tab:', tabName);
+            console.log('Active button element:', activeBtn);
+            
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                console.log('✅ Successfully activated tab button:', tabName);
+            } else {
+                console.error('❌ Tab button not found:', tabName);
+                console.log('Available button data-tab values:', Array.from(allTabButtons).map(b => b.dataset.tab));
+            }
+            
+            console.log('=== END SHOW ADMIN TAB DEBUG ===');
+        }
+        
+        // Test function for debugging tab switching
+        function testUploadAdsTab() {
+            console.log('=== TESTING UPLOAD ADS TAB ===');
+            showAdminTab('advertisements');
+            
+            // Check if the tab content is visible
+            const adTab = document.getElementById('advertisements');
+            if (adTab) {
+                console.log('Ad tab found:', adTab);
+                console.log('Ad tab display style:', adTab.style.display);
+                console.log('Ad tab classes:', adTab.className);
+                console.log('Ad tab computed display:', window.getComputedStyle(adTab).display);
+            } else {
+                console.log('Ad tab NOT found!');
+            }
+            
+            // Check if the form is visible
+            const adForm = document.getElementById('adUploadForm');
+            if (adForm) {
+                console.log('Ad form found:', adForm);
+                console.log('Ad form parent:', adForm.parentElement);
+            } else {
+                console.log('Ad form NOT found!');
+            }
+        }
+        
+        function showAllTabs() {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'block';
+                tab.classList.add('active');
+            });
+        }
+        
+        function hideAllTabs() {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+                tab.classList.remove('active');
+            });
+        }
+        
+        // Set up event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminTabButtons = document.querySelectorAll('.tab-btn');
+            console.log('Found admin tab buttons:', adminTabButtons.length);
+            
+            adminTabButtons.forEach((btn, index) => {
+                console.log(`Setting up admin tab button ${index}:`, btn.textContent, 'data-tab:', btn.dataset.tab);
+                btn.addEventListener('click', function() {
+                    console.log('Admin tab button clicked:', this.textContent, 'data-tab:', this.dataset.tab);
+                    showAdminTab(this.dataset.tab);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

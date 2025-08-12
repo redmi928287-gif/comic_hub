@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Upload Website</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-book-open"></i>
+                <span>ComicHub</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#comics" class="nav-link">Comics</a>
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#admin" class="nav-link admin-only" style="display: none;">Admin</a>
+            </div>
+            <div class="nav-auth">
+                <button id="loginBtn" class="btn btn-outline">Login</button>
+                <button id="registerBtn" class="btn btn-primary">Register</button>
+                <div id="userMenu" class="user-menu" style="display: none;">
+                    <span id="username"></span>
+                    <div class="user-dropdown">
+                        <a href="#profile">Profile</a>
+                        <a href="#settings">Settings</a>
+                        <button id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="container">
+                <div class="hero">
+                    <h1>Welcome to ComicHub</h1>
+                    <p>Discover and read amazing comics from around the world</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-large">Browse Comics</button>
+                        <button class="btn btn-outline btn-large">Learn More</button>
+                    </div>
+                </div>
+                
+                <!-- Premium Banner -->
+                <div class="premium-banner">
+                    <div class="premium-content">
+                        <i class="fas fa-crown"></i>
+                        <div>
+                            <h3>Premium User</h3>
+                            <p>Unlock exclusive features and remove ads</p>
+                        </div>
+                        <button class="btn btn-premium">Upgrade Now</button>
+                    </div>
+                </div>
+
+                <!-- Advertisement Space -->
+                <div class="ad-space">
+                    <h3>Advertisement Space</h3>
+                    <div class="ad-content">
+                        <p>Your ad could be here!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comics Section -->
+        <section id="comics" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Comics Library</h2>
+                    <div class="comic-controls">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Search comics...">
+                            <button id="searchBtn"><i class="fas fa-search"></i></button>
+                        </div>
+                        <select id="categoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="action">Action</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="comedy">Comedy</option>
+                            <option value="drama">Drama</option>
+                            <option value="fantasy">Fantasy</option>
+                            <option value="horror">Horror</option>
+                            <option value="romance">Romance</option>
+                            <option value="sci-fi">Sci-Fi</option>
+                            <option value="thriller">Thriller</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="comics-grid" id="comicsGrid">
+                    <!-- Comics will be loaded here -->
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be generated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Dashboard Section -->
+        <section id="dashboard" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Live Dashboard</h2>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Online Users</h3>
+                            <p id="onlineUsers">0</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Users</h3>
+                            <p id="totalUsers">66,472</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Daily Views</h3>
+                            <p id="dailyViews">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="live-activity">
+                    <h3>Live Activity</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <span>Current Time:</span>
+                            <span id="currentTime">--:--:--</span>
+                        </div>
+                        <div class="activity-item">
+                            <span>Daily Views:</span>
+                            <span id="dailyViewsActivity">0</span>
+                        </div>
+                        <div class="activity-item">
+                            <span>User Count Change:</span>
+                            <span id="userCountChange">+0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Talk to Admin Button -->
+                <div class="admin-contact">
+                    <button class="btn btn-primary btn-large" onclick="contactAdmin()">
+                        <i class="fab fa-telegram"></i>
+                        Talk to Admin
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2><i class="fas fa-shield-alt"></i> Admin Panel</h2>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="upload">Upload Comic</button>
+                    <button class="tab-btn" data-tab="users">Manage Users</button>
+                    <button class="tab-btn" data-tab="comics">Manage Comics</button>
+                    <button class="tab-btn" data-tab="stats">Statistics</button>
+                    <button class="tab-btn" data-tab="advertisements">Upload Ads</button>
+                    <button class="tab-btn" data-tab="premium-users">Premium Users</button>
+                    
+                    <!-- Debug Button -->
+                    <button onclick="testUploadAdsTab()" style="background: #ff6b6b; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+                        🐛 Debug Upload Ads
+                    </button>
+                </div>
+
+                <!-- Upload Comic Tab -->
+                <div class="tab-content active" id="upload">
+                    <div class="upload-instructions">
+                        <h3><i class="fas fa-upload"></i> Upload Comic</h3>
+                        <div class="instruction-steps">
+                            <div class="step">
+                                <span class="step-number">1</span>
+                                <p>Select your comic file (PDF, ZIP, or Image format)</p>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">2</span>
+                                <p>Fill in the comic details (title, description, category)</p>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">3</span>
+                                <p>Optionally add a Telegram link if sharing from Telegram</p>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">4</span>
+                                <p>Click Upload to add the comic to the library</p>
+                            </div>
+                        </div>
+                        <div class="telegram-tip">
+                            <i class="fab fa-telegram"></i>
+                            <strong>Tip:</strong> You can download files from Telegram and upload them here, or paste the Telegram link for reference.
+                        </div>
+                    </div>
+                    
+                    <form id="comicUploadForm" class="admin-form">
+                        <div class="form-group">
+                            <label for="comicTitle">Title</label>
+                            <input type="text" id="comicTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="comicDescription">Description</label>
+                            <textarea id="comicDescription" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="comicThumbnail">Thumbnail Image</label>
+                            <input type="file" id="comicThumbnail" accept="image/*" required>
+                            <small>Choose an image from your local device for the comic thumbnail</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="comicFile">Comic File (PDF, ZIP, or Image)</label>
+                            <input type="file" id="comicFile" accept=".pdf,.zip,.jpg,.jpeg,.png,.gif,.webp" required>
+                            <small>Upload the comic file directly or from Telegram</small>
+                            
+                            <!-- File Preview -->
+                            <div class="file-upload-preview" id="filePreview">
+                                <div class="file-info">
+                                    <div class="file-icon">
+                                        <i class="fas fa-file" id="fileIcon"></i>
+                                    </div>
+                                    <div class="file-details">
+                                        <h5 id="fileName">No file selected</h5>
+                                        <p id="fileSize">Select a file to see details</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="comicTelegramLink">Telegram Link (Optional)</label>
+                            <input type="url" id="comicTelegramLink" placeholder="https://t.me/...">
+                            <small>If you're sharing from Telegram, paste the link here</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="comicCategory">Category</label>
+                            <select id="comicCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="action">Action</option>
+                                <option value="adventure">Adventure</option>
+                                <option value="comedy">Comedy</option>
+                                <option value="drama">Drama</option>
+                                <option value="fantasy">Fantasy</option>
+                                <option value="horror">Horror</option>
+                                <option value="romance">Romance</option>
+                                <option value="sci-fi">Sci-Fi</option>
+                                <option value="thriller">Thriller</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comicTags">Tags (comma separated)</label>
+                            <input type="text" id="comicTags" placeholder="action, adventure, superhero">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload Comic</button>
+                    </form>
+                </div>
+
+                <!-- Manage Users Tab -->
+                <div class="tab-content" id="users">
+                    <div class="admin-controls">
+                        <input type="text" id="userSearch" placeholder="Search users...">
+                        <select id="userRoleFilter">
+                            <option value="all">All Roles</option>
+                            <option value="user">User</option>
+                            <option value="premium">Premium</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div id="usersList">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Manage Comics Tab -->
+                <div class="tab-content" id="comics">
+                    <div class="admin-controls">
+                        <select id="comicStatusFilter">
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <select id="comicCategoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="action">Action</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="comedy">Comedy</option>
+                            <option value="drama">Drama</option>
+                            <option value="fantasy">Fantasy</option>
+                            <option value="horror">Horror</option>
+                            <option value="romance">Romance</option>
+                            <option value="sci-fi">Sci-Fi</option>
+                            <option value="thriller">Thriller</option>
+                        </select>
+                    </div>
+                    <div class="comics-table" id="adminComicsTable">
+                        <!-- Admin comics will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Statistics Tab -->
+                <div class="tab-content" id="stats">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Online Users</h3>
+                                <p id="adminOnlineUsers">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Total Users</h3>
+                                <p id="adminTotalUsers">66,472</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="card-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Daily Views</h3>
+                                <p id="adminDailyViews">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="card-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Total Comics</h3>
+                                <p id="adminTotalComics">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="live-activity">
+                        <h3>Live Activity</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <span>Current Time:</span>
+                                <span id="adminCurrentTime">--:--:--</span>
+                            </div>
+                            <div class="activity-item">
+                                <span>Daily Views:</span>
+                                <span id="adminDailyViewsActivity">0</span>
+                            </div>
+                            <div class="activity-item">
+                                <span>User Count Change:</span>
+                                <span id="adminUserCountChange">+0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recent-activity">
+                        <h3>Recent Activity</h3>
+                        <div id="recentActivity">
+                            <!-- Recent activity will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manage Advertisements Tab -->
+                <div class="tab-content" id="advertisements">
+                    <div class="admin-tab-content" id="advertisements-tab">
+                        <h3>Upload Advertisements</h3>
+                        <div class="ad-upload-form">
+                            <h4>Upload New Advertisement</h4>
+                            <form id="adUploadForm">
+                                <div class="form-group">
+                                    <label for="adTitle">Ad Title:</label>
+                                    <input type="text" id="adTitle" name="adTitle" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="adText">Ad Text:</label>
+                                    <textarea id="adText" name="adText" rows="3" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="adTelegramLink">Telegram Link:</label>
+                                    <input type="url" id="adTelegramLink" name="adTelegramLink" placeholder="https://t.me/..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="adBannerImage">Banner Image:</label>
+                                    <input type="file" id="adBannerImage" name="adBannerImage" accept="image/*" required>
+                                    <small>Recommended size: 1200x300px</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="adPosition">Position:</label>
+                                    <select id="adPosition" name="adPosition" required>
+                                        <option value="top">Top Banner</option>
+                                        <option value="sidebar">Sidebar</option>
+                                        <option value="premium">Premium User Banner</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="adStatus">Status:</label>
+                                    <select id="adStatus" name="adStatus" required>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Upload Advertisement</button>
+                            </form>
+                        </div>
+                        
+                        <div class="current-ads">
+                            <h4>Current Advertisements</h4>
+                            <div id="adsList" class="ads-grid">
+                                <!-- Ads will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Premium Users Tab -->
+                <div class="tab-content" id="premium-users">
+                    <div class="admin-tab-content" id="premium-users-tab">
+                        <h3>Premium User Management</h3>
+                        <div class="premium-redirect-section">
+                            <h4>Telegram Redirect Setup</h4>
+                            <p>Premium users will be redirected to your Telegram account: <strong>@beast_is_kum</strong></p>
+                            <div class="telegram-link-display">
+                                <a href="https://t.me/beast_is_kum" target="_blank" class="btn btn-telegram">
+                                    <i class="fab fa-telegram"></i> Open Your Telegram
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="premium-users-list">
+                            <h4>Premium Users</h4>
+                            <div id="premiumUsersList" class="users-table">
+                                <!-- Premium users will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Register</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
